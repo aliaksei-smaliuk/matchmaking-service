@@ -1,27 +1,26 @@
+using MatchmakingService.DataAccess.Redis.Extensions;
+using MatchmakingService.Domain.Extensions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Internal;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-    options.InstanceName = "master";
-});
+builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+
+builder.Services
+    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
+    .AddRedisDataAccess(builder.Configuration.GetSection("Redis"))
+    .AddDomainAccess(builder.Configuration.GetSection("Game"));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
+// TODO Disable for prod
 app.UseSwagger();
 app.UseSwaggerUI();
-// }
-
 
 app.MapControllers();
 

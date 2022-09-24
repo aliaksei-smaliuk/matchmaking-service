@@ -8,8 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.9"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MatchmakingService.DataAccess.Redis\MatchmakingService.DataAccess.Redis.csproj"/>
+        <ProjectReference Include="..\MatchmakingService.Domain\MatchmakingService.Domain.csproj"/>
     </ItemGroup>
 
 </Project>
