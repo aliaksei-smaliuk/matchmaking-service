@@ -1,0 +1,13 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  matchmaking-service:
+    image: cool-game/matchmacking-serice
+    build:
+      context: .
+      dockerfile: ./MatchmakingService/Dockerfile
+    ports:
+      - "8083:80"
+    depends_on:
+      - redis
+  redis:
+    image: redis
