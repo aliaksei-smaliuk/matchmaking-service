@@ -2,6 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService", "MatchmakingService\MatchmakingService.csproj", "{46DB5B4E-8DA5-4DC3-B031-B2DA751C6AA8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{8C5F8645-A41C-48B1-8B22-5AABD539A5A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.Domain", "MatchmakingService.Domain\MatchmakingService.Domain.csproj", "{8212EC93-9073-4016-B699-B186248B8D8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.Domain.Abstraction", "MatchmakingService.Domain.Abstraction\MatchmakingService.Domain.Abstraction.csproj", "{15C88732-01DE-4653-B54B-4B528A539ABB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{6AA0FBAB-A28A-4568-A4AF-7D42763C7A44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAccess.Redis", "MatchmakingService.DataAccess.Redis\MatchmakingService.DataAccess.Redis.csproj", "{77C37AC0-9425-4082-9B6D-19CB2214E893}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +22,22 @@ Global
 		{46DB5B4E-8DA5-4DC3-B031-B2DA751C6AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46DB5B4E-8DA5-4DC3-B031-B2DA751C6AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46DB5B4E-8DA5-4DC3-B031-B2DA751C6AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8212EC93-9073-4016-B699-B186248B8D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8212EC93-9073-4016-B699-B186248B8D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8212EC93-9073-4016-B699-B186248B8D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8212EC93-9073-4016-B699-B186248B8D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15C88732-01DE-4653-B54B-4B528A539ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C88732-01DE-4653-B54B-4B528A539ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C88732-01DE-4653-B54B-4B528A539ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C88732-01DE-4653-B54B-4B528A539ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77C37AC0-9425-4082-9B6D-19CB2214E893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C37AC0-9425-4082-9B6D-19CB2214E893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C37AC0-9425-4082-9B6D-19CB2214E893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C37AC0-9425-4082-9B6D-19CB2214E893}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8212EC93-9073-4016-B699-B186248B8D8C} = {8C5F8645-A41C-48B1-8B22-5AABD539A5A3}
+		{15C88732-01DE-4653-B54B-4B528A539ABB} = {8C5F8645-A41C-48B1-8B22-5AABD539A5A3}
+		{77C37AC0-9425-4082-9B6D-19CB2214E893} = {6AA0FBAB-A28A-4568-A4AF-7D42763C7A44}
 	EndGlobalSection
 EndGlobal
