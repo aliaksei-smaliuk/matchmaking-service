@@ -14,7 +14,7 @@ builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddRedisDataAccess(builder.Configuration.GetSection("Redis"))
-    .AddDomainAccess(builder.Configuration.GetSection("Game"));
+    .AddDomainAccess(builder.Configuration);
 
 var app = builder.Build();
 

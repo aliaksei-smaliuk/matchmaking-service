@@ -31,8 +31,8 @@ public class PlayerDataPoolRepository : IPlayerDataPoolRepository
         CancellationToken cancellationToken)
     {
         var score = -_systemClock.UtcNow.ToUnixTimeMilliseconds();
-        await _redisService.AddToSortedSetAsync(_redisOptions.Value.ActivityPlayerPoolPath, score,
-            matchmakingPlayerData.PlayerId, cancellationToken);
+        await _redisService.SortedSetAddAsync(_redisOptions.Value.ActivityPlayerPoolPath, score,
+            matchmakingPlayerData.RequestId, cancellationToken);
     }
 
     public async Task AddToScorePoolAsync(MatchmakingPlayerData matchmakingPlayerData,
@@ -40,7 +40,7 @@ public class PlayerDataPoolRepository : IPlayerDataPoolRepository
     {
         var score = matchmakingPlayerData.Level +
                     (double) matchmakingPlayerData.Cash / _gameOptions.Value.MaxCashAmount;
-        await _redisService.AddToSortedSetAsync(_redisOptions.Value.ScorePlayerPoolPath, score,
-            matchmakingPlayerData.PlayerId, cancellationToken);
+        await _redisService.SortedSetAddAsync(_redisOptions.Value.ScorePlayerPoolPath, score,
+            matchmakingPlayerData.RequestId, cancellationToken);
     }
 }

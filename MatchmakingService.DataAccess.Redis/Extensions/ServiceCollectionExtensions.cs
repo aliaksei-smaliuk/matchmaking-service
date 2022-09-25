@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection
             .Configure<RedisOptions>(configuration)
             .AddSingleton<IRedisService, RedisService>()
+            .AddSingleton<IOwnerListRepository, OwnerListRepository>()
             .AddSingleton<IPlayerDataPoolRepository, PlayerDataPoolRepository>()
             .AddSingleton<IPlayerDataRepository, PlayerDataRepository>();
     }

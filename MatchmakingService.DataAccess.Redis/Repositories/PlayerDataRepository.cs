@@ -26,6 +26,6 @@ public class PlayerDataRepository : IPlayerDataRepository
 
     private string GetKey(MatchmakingPlayerData matchmakingPlayerData)
     {
-        return $"{_redisOptions.Value.MatchMakingPlayerDataPath}:{matchmakingPlayerData.PlayerId}";
+        return $"{_redisOptions.Value.MatchMakingPlayerDataPath}:{matchmakingPlayerData.RequestId}";
     }
 }

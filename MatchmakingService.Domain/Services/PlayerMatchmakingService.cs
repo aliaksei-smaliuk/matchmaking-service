@@ -9,27 +9,33 @@ namespace MatchmakingService.Domain.Services;
 
 public class PlayerMatchmakingService : IPlayerMatchmakingService
 {
-    private readonly IOptions<GameOptions> _gameOptions;
+    private readonly IOptions<MatchmakingOptions> _matchmakingOptions;
     private readonly IPlayerDataPoolRepository _playerDataPoolRepository;
     private readonly IPlayerDataRepository _playerDataRepository;
+    private readonly IMatchmakingPlayerDataSynchronizationService _synchronizationService;
     private readonly ISystemClock _systemClock;
 
     public PlayerMatchmakingService(
         IPlayerDataPoolRepository playerDataPoolRepository,
         IPlayerDataRepository playerDataRepository,
+        IMatchmakingPlayerDataSynchronizationService synchronizationService,
         ISystemClock systemClock,
-        IOptions<GameOptions> gameOptions)
+        IOptions<MatchmakingOptions> matchmakingOptions)
     {
         _playerDataPoolRepository = playerDataPoolRepository;
         _playerDataRepository = playerDataRepository;
+        _synchronizationService = synchronizationService;
         _systemClock = systemClock;
-        _gameOptions = gameOptions;
+        _matchmakingOptions = matchmakingOptions;
     }
 
     public async Task AddPlayerToQueueAsync(PlayerData playerData, CancellationToken cancellationToken)
     {
         var matchmakingPlayerData = new MatchmakingPlayerData(playerData)
-            {ValidUntil = _systemClock.UtcNow + _gameOptions.Value.MatchmakingTimeout};
+            {ValidUntil = _systemClock.UtcNow + _matchmakingOptions.Value.MatchmakingTimeout};
+
+        // Important before all other initializations
+        await _synchronizationService.InitAsync(matchmakingPlayerData, cancellationToken);
 
         await Task.WhenAll(
             _playerDataPoolRepository.AddToActivityPoolAsync(matchmakingPlayerData, cancellationToken),

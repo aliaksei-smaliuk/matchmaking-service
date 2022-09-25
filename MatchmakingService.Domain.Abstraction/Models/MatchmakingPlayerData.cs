@@ -6,5 +6,6 @@ public record MatchmakingPlayerData : PlayerData
     {
     }
 
+    public string RequestId { get; init; } = Guid.NewGuid().ToString();
     public DateTimeOffset ValidUntil { get; init; }
 }

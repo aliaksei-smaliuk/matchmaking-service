@@ -12,7 +12,10 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         return serviceCollection
-            .Configure<GameOptions>(configuration)
+            .Configure<GameOptions>(configuration.GetSection("Game"))
+            .Configure<MatchmakingOptions>(configuration.GetSection("Matchmaking"))
+            .AddSingleton<IMatchmakingPlayerDataOwnerListService, MatchmakingPlayerDataOwnerListService>()
+            .AddSingleton<IMatchmakingPlayerDataSynchronizationService, MatchmakingPlayerDataSynchronizationService>()
             .AddSingleton<IPlayerMatchmakingService, PlayerMatchmakingService>();
     }
 }
