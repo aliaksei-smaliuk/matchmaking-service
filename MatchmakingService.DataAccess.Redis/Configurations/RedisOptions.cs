@@ -6,4 +6,5 @@ public record RedisOptions
     public string ActivityPlayerPoolPath { get; set; } = null!;
     public string ScorePlayerPoolPath { get; set; } = null!;
     public string MatchMakingPlayerDataPath { get; set; } = null!;
+    public string OwnerListPath { get; set; } = null!;
 }

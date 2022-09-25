@@ -10,4 +10,5 @@ public class AddMatchmakingRequest
     [Required] public int? Cash { get; set; }
     [Required] public Platform? Platform { get; set; }
     [Required] public double? HoursInGame { get; set; }
+    [Required] public GameType? GameType { get; set; }
 }

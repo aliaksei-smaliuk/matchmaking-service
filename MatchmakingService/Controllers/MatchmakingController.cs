@@ -11,11 +11,11 @@ namespace MatchmakingService.Controllers;
 public class MatchmakingController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IPlayerMatchmakingService _playerMatchmakingService;
+    private readonly IMatchmakingRequestService _matchmakingRequestService;
 
-    public MatchmakingController(IPlayerMatchmakingService playerMatchmakingService, IMapper mapper)
+    public MatchmakingController(IMatchmakingRequestService matchmakingRequestService, IMapper mapper)
     {
-        _playerMatchmakingService = playerMatchmakingService;
+        _matchmakingRequestService = matchmakingRequestService;
         _mapper = mapper;
     }
 
@@ -23,7 +23,7 @@ public class MatchmakingController : ControllerBase
     public async Task<IActionResult> AddAsync(AddMatchmakingRequest request, CancellationToken cancellationToken)
     {
         var matchmakingPlayerData = _mapper.Map<PlayerData>(request);
-        await _playerMatchmakingService.AddPlayerToQueueAsync(matchmakingPlayerData, cancellationToken);
+        await _matchmakingRequestService.InitAsync(matchmakingPlayerData, cancellationToken);
         return Accepted();
     }
 }

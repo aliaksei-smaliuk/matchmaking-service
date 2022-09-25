@@ -1,5 +1,6 @@
 using MatchmakingService.DataAccess.Redis.Extensions;
 using MatchmakingService.Domain.Extensions;
+using MatchmakingWorker.BackgroundWorkers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Internal;
 
@@ -15,6 +16,8 @@ builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddRedisDataAccess(builder.Configuration.GetSection("Redis"))
     .AddDomainAccess(builder.Configuration);
+
+builder.Services.AddHostedService<Worker>();
 
 var app = builder.Build();
 
