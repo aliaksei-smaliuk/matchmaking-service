@@ -45,6 +45,26 @@ public class RedisService : IRedisService
         }
     }
 
+    public async Task<IReadOnlyCollection<T>> GetAsync<T>(IReadOnlyCollection<string> keys,
+        CancellationToken cancellationToken) where T : class
+    {
+        var redisKeys = keys.Select(k => (RedisKey) k).ToArray();
+        var redisValues = await Database.StringGetAsync(redisKeys).WaitAsync(cancellationToken);
+        var valuesStr = redisValues
+            .Select(v => (string?) v)
+            .Where(s => s is not null)
+            .ToArray();
+        try
+        {
+            return valuesStr.Select(s => JsonSerializer.Deserialize<T>(s!)!).ToArray();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get data by key {Key}", keys);
+            return Array.Empty<T>();
+        }
+    }
+
     public async Task SortedSetAddAsync(string key, double score, string value, CancellationToken cancellationToken)
     {
         var entry = new SortedSetEntry(value, score);
@@ -60,6 +80,14 @@ public class RedisService : IRedisService
     public async Task SortedSetRemoveAsync(string key, string value, CancellationToken cancellationToken)
     {
         await Database.SortedSetRemoveAsync(key, value).WaitAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<string>> SortedSetGetRangeAsync(string key, double minScore, double maxScore,
+        CancellationToken cancellationToken)
+    {
+        var redisValues =
+            await Database.SortedSetRangeByScoreAsync(key, minScore, maxScore).WaitAsync(cancellationToken);
+        return redisValues.Select(v => (string) v!).ToArray();
     }
 
     public async Task ListPushAsync(string key, string value, CancellationToken cancellationToken)

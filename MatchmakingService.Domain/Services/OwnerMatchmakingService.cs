@@ -5,10 +5,13 @@ namespace MatchmakingService.Domain.Services;
 
 public class OwnerMatchmakingService : IOwnerMatchmakingService
 {
+    private readonly IScoreCandidatesService _scoreCandidatesService;
     private readonly IMatchmakingPlayerDataSynchronizationService _synchronizationService;
 
-    public OwnerMatchmakingService(IMatchmakingPlayerDataSynchronizationService synchronizationService)
+    public OwnerMatchmakingService(IScoreCandidatesService scoreCandidatesService,
+        IMatchmakingPlayerDataSynchronizationService synchronizationService)
     {
+        _scoreCandidatesService = scoreCandidatesService;
         _synchronizationService = synchronizationService;
     }
 
@@ -57,33 +60,43 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
     private async Task<IReadOnlyCollection<MatchmakingPlayerData>> GetLargeCandidatesSampleAsync(
         MatchmakingPlayerData owner, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _scoreCandidatesService.GetLargeCandidatesSampleAsync(owner, cancellationToken);
     }
 
     private async Task<IReadOnlyCollection<MatchmakingPlayerData>> TryAddToOwnQueueAsync(
         IReadOnlyCollection<MatchmakingPlayerData> candidates, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var candidate2OwnTask =
+            candidates.ToDictionary(c => c,
+                c => _synchronizationService.TryAddToOwnQueueAsync(c, owner, cancellationToken));
+        await Task.WhenAll(candidate2OwnTask.Values);
+
+        return candidate2OwnTask
+            .Where(p => p.Value.Result)
+            .Select(p => p.Key)
+            .ToArray();
     }
 
     private async Task<IReadOnlyCollection<MatchmakingPlayerData>> FilterCandidatesAsync(
         IReadOnlyCollection<MatchmakingPlayerData> candidates, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return candidates;
     }
 
     private async Task<(bool, IReadOnlyCollection<MatchmakingPlayerData>)> OwnCandidatesAsync(
         IReadOnlyCollection<MatchmakingPlayerData> smallCandidatesSample, MatchmakingPlayerData matchmakingPlayerData,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return (false, Array.Empty<MatchmakingPlayerData>());
     }
 
-    private async Task ReleaseCandidatesAsync(IReadOnlyCollection<MatchmakingPlayerData> ownedLargeCandidatesSample,
-        MatchmakingPlayerData matchmakingPlayerData, CancellationToken cancellationToken)
+    private async Task ReleaseCandidatesAsync(IReadOnlyCollection<MatchmakingPlayerData> ownedCandidatesSample,
+        MatchmakingPlayerData owner, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var releaseTasks = ownedCandidatesSample.Select(c =>
+            _synchronizationService.ReleaseAsync(c, owner, cancellationToken));
+        await Task.WhenAll(releaseTasks);
     }
 }

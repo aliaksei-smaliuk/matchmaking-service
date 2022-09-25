@@ -26,6 +26,12 @@ public class PlayerScoreRepository : IPlayerScoreRepository
             matchmakingPlayerData.RequestId, cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<string>> GetRangeAsync(GameType gameType, double minScore, double maxScore,
+        CancellationToken cancellationToken)
+    {
+        return await _redisService.SortedSetGetRangeAsync(GetKey(gameType), minScore, maxScore, cancellationToken);
+    }
+
     public async Task RemoveAsync(MatchmakingPlayerData matchmakingPlayerData, CancellationToken cancellationToken)
     {
         await _redisService.SortedSetRemoveAsync(GetKey(matchmakingPlayerData.GameType),

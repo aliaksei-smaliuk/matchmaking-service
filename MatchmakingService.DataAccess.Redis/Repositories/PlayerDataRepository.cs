@@ -30,6 +30,13 @@ public class PlayerDataRepository : IPlayerDataRepository
         return await _redisService.GetAsync<MatchmakingPlayerData>(GetKey(gameType, requestId), cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<MatchmakingPlayerData>> GetAsync(GameType gameType,
+        IReadOnlyCollection<string> requestIds, CancellationToken cancellationToken)
+    {
+        var keys = requestIds.Select(i => GetKey(gameType, i)).ToArray();
+        return await _redisService.GetAsync<MatchmakingPlayerData>(keys, cancellationToken);
+    }
+
     private string GetKey(MatchmakingPlayerData matchmakingPlayerData) =>
         GetKey(matchmakingPlayerData.GameType, matchmakingPlayerData.RequestId);
 
