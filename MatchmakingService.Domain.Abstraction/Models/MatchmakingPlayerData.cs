@@ -2,6 +2,10 @@ namespace MatchmakingService.Domain.Abstraction.Models;
 
 public record MatchmakingPlayerData : PlayerData
 {
+    public MatchmakingPlayerData()
+    {
+    }
+
     public MatchmakingPlayerData(PlayerData parent) : base(parent)
     {
     }

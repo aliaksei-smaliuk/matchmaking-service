@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchmakingWorker.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class TestExecutionController : ControllerBase
 {
     private readonly IGeneralMatchmakingService _generalMatchmakingService;

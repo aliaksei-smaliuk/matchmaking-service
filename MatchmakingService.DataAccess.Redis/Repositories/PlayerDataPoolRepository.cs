@@ -31,7 +31,7 @@ public class PlayerDataPoolRepository : IPlayerDataPoolRepository
     public async Task PushAsync(MatchmakingPlayerData matchmakingPlayerData,
         CancellationToken cancellationToken)
     {
-        var score = -_systemClock.UtcNow.ToUnixTimeMilliseconds();
+        var score = _systemClock.UtcNow.ToUnixTimeMilliseconds();
         await _redisService.SortedSetAddAsync(GetKey(matchmakingPlayerData.GameType), score,
             matchmakingPlayerData.RequestId, cancellationToken);
     }

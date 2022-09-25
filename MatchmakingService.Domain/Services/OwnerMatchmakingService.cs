@@ -67,14 +67,14 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
         IReadOnlyCollection<MatchmakingPlayerData> candidates, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        var candidate2OwnTask =
-            candidates.ToDictionary(c => c,
-                c => _synchronizationService.TryAddToOwnQueueAsync(c, owner, cancellationToken));
+        var candidate2OwnTask = candidates.Where(c => c.RequestId != owner.RequestId).ToDictionary(c => c,
+            c => _synchronizationService.TryAddToOwnQueueAsync(c, owner, cancellationToken));
         await Task.WhenAll(candidate2OwnTask.Values);
 
         return candidate2OwnTask
             .Where(p => p.Value.Result)
             .Select(p => p.Key)
+            .Concat(new[] {owner})
             .ToArray();
     }
 

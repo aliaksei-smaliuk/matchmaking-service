@@ -53,10 +53,10 @@ public class ScoreCandidatesService : IScoreCandidatesService
         return (minLevel, maxLevel);
     }
 
-    private (int minCash, int maxCash) GetCashRange(MatchmakingPlayerData owner)
+    private (double minCash, double maxCash) GetCashRange(MatchmakingPlayerData owner)
     {
         // TODO Use more neat math calculation
-        var cashPercentageDispersion = _matchmakingOptions.Value.MaxRoomCashPercentageDifference / 2 / 100;
+        var cashPercentageDispersion = (double) _matchmakingOptions.Value.MaxRoomCashPercentageDifference / 2 / 100;
         var minCash = owner.Cash * (1 - cashPercentageDispersion) / _gameOptions.Value.MaxCashAmount;
         var maxCash = owner.Cash * (1 + cashPercentageDispersion) / _gameOptions.Value.MaxCashAmount;
         return (minCash, maxCash);

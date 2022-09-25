@@ -35,7 +35,7 @@ public class MatchmakingPlayerDataSynchronizationService : IMatchmakingPlayerDat
         if (!isActive)
             return false;
 
-        await _ownerListService.PushAsync(owner, target, cancellationToken);
+        await _ownerListService.PushAsync(target, owner, cancellationToken);
         return true;
     }
 

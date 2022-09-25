@@ -12,11 +12,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MatchmakingService.Domain.Abstraction\MatchmakingService.Domain.Abstraction.csproj"/>
+        <ProjectReference Include="..\MatchmakingService.DataAccess.Redis\MatchmakingService.DataAccess.Redis.csproj"/>
+        <ProjectReference Include="..\MatchmakingService.Domain\MatchmakingService.Domain.csproj"/>
     </ItemGroup>
 
 </Project>
