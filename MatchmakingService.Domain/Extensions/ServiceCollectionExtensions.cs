@@ -14,8 +14,13 @@ public static class ServiceCollectionExtensions
         return serviceCollection
             .Configure<GameOptions>(configuration.GetSection("Game"))
             .Configure<MatchmakingOptions>(configuration.GetSection("Matchmaking"))
+            .AddSingleton<IGeneralMatchmakingService, GeneralMatchmakingService>()
+            .AddSingleton<IMatchmakingScoreService, MatchmakingScoreService>()
+            .AddSingleton<IOwnerMatchmakingService, OwnerMatchmakingService>()
+            .AddSingleton<IPlayerDataPoolService, PlayerDataPoolService>()
+            .AddSingleton<IScoreCandidatesService, ScoreCandidatesService>()
             .AddSingleton<IMatchmakingPlayerDataOwnerListService, MatchmakingPlayerDataOwnerListService>()
             .AddSingleton<IMatchmakingPlayerDataSynchronizationService, MatchmakingPlayerDataSynchronizationService>()
-            .AddSingleton<IMatchmakingInitializationService, MatchmakingInitializationService>();
+            .AddSingleton<IMatchmakingRequestService, MatchmakingRequestService>();
     }
 }

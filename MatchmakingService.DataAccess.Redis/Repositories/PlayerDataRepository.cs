@@ -24,8 +24,17 @@ public class PlayerDataRepository : IPlayerDataRepository
         await _redisService.AddAsync(GetKey(matchmakingPlayerData), matchmakingPlayerData, cancellationToken);
     }
 
-    private string GetKey(MatchmakingPlayerData matchmakingPlayerData)
+    public async Task<MatchmakingPlayerData?> GetAsync(GameType gameType, string requestId,
+        CancellationToken cancellationToken)
     {
-        return $"{_redisOptions.Value.MatchMakingPlayerDataPath}:{matchmakingPlayerData.RequestId}";
+        return await _redisService.GetAsync<MatchmakingPlayerData>(GetKey(gameType, requestId), cancellationToken);
+    }
+
+    private string GetKey(MatchmakingPlayerData matchmakingPlayerData) =>
+        GetKey(matchmakingPlayerData.GameType, matchmakingPlayerData.RequestId);
+
+    private string GetKey(GameType gameType, string key)
+    {
+        return $"{gameType}:{_redisOptions.Value.MatchMakingPlayerDataPath}:{key}";
     }
 }

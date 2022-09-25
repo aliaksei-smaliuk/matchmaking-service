@@ -7,4 +7,5 @@ public record PlayerData
     public int Cash { get; init; }
     public Platform Platform { get; init; }
     public double HoursInGame { get; init; }
+    public GameType GameType { get; set; }
 }

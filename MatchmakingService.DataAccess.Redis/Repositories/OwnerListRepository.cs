@@ -1,5 +1,6 @@
 using MatchmakingService.DataAccess.Redis.Configurations;
 using MatchmakingService.DataAccess.Redis.Interfaces;
+using MatchmakingService.Domain.Abstraction.Models;
 using MatchmakingService.Domain.Abstraction.Repositories;
 using Microsoft.Extensions.Options;
 
@@ -16,28 +17,29 @@ public class OwnerListRepository : IOwnerListRepository
         _redisOptions = redisOptions;
     }
 
-    public async Task PushAsync(string target, string owner, CancellationToken cancellationToken)
+    public async Task PushAsync(GameType gameType, string target, string owner, CancellationToken cancellationToken)
     {
-        await _redisService.ListPushAsync(GetKey(target), owner, cancellationToken);
+        await _redisService.ListPushAsync(GetKey(gameType, target), owner, cancellationToken);
     }
 
-    public async Task SetFirstAsync(string target, string owner, CancellationToken cancellationToken)
+    public async Task SetFirstAsync(GameType gameType, string target, string owner, CancellationToken cancellationToken)
     {
-        await _redisService.ListSetFirstOrPushLeftAsync(GetKey(target), owner, cancellationToken);
+        await _redisService.ListSetFirstOrPushLeftAsync(GetKey(gameType, target), owner, cancellationToken);
     }
 
-    public async Task<string?> GetAsync(string target, int index, CancellationToken cancellationToken)
+    public async Task<string?> GetAsync(GameType gameType, string target, int index,
+        CancellationToken cancellationToken)
     {
-        return await _redisService.ListGetAsync(GetKey(target), index, cancellationToken);
+        return await _redisService.ListGetAsync(GetKey(gameType, target), index, cancellationToken);
     }
 
-    public async Task RemoveAsync(string target, string owner, CancellationToken cancellationToken)
+    public async Task RemoveAsync(GameType gameType, string target, string owner, CancellationToken cancellationToken)
     {
-        await _redisService.ListRemoveAsync(GetKey(target), owner, cancellationToken);
+        await _redisService.ListRemoveAsync(GetKey(gameType, target), owner, cancellationToken);
     }
 
-    private string GetKey(string key)
+    private string GetKey(GameType gameType, string key)
     {
-        return $"{_redisOptions.Value.OwnerListPath}:{key}";
+        return $"{gameType}:{_redisOptions.Value.OwnerListPath}:{key}";
     }
 }

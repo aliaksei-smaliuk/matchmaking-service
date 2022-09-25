@@ -21,35 +21,40 @@ public class MatchmakingPlayerDataOwnerListService : IMatchmakingPlayerDataOwner
     public async Task<bool> IsActiveAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        var ownerId = await _ownerListRepository.GetAsync(target.RequestId, CurrentOwnerIndex, cancellationToken);
+        var ownerId =
+            await _ownerListRepository.GetAsync(target.GameType, target.RequestId, CurrentOwnerIndex,
+                cancellationToken);
         return owner.RequestId.Equals(ownerId, StringComparison.Ordinal);
     }
 
     public async Task PushAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        await _ownerListRepository.PushAsync(target.RequestId, owner.RequestId, cancellationToken);
+        await _ownerListRepository.PushAsync(target.GameType, target.RequestId, owner.RequestId, cancellationToken);
     }
 
     public async Task RemoveAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        await _ownerListRepository.RemoveAsync(target.RequestId, owner.RequestId, cancellationToken);
+        await _ownerListRepository.RemoveAsync(target.GameType, target.RequestId, owner.RequestId, cancellationToken);
     }
 
     public async Task ActivateAsync(MatchmakingPlayerData target, CancellationToken cancellationToken)
     {
-        await _ownerListRepository.SetFirstAsync(target.RequestId, ActiveStatusName, cancellationToken);
+        await _ownerListRepository.SetFirstAsync(target.GameType, target.RequestId, ActiveStatusName,
+            cancellationToken);
     }
 
     public async Task DeactivateAsync(MatchmakingPlayerData target, CancellationToken cancellationToken)
     {
-        await _ownerListRepository.SetFirstAsync(target.RequestId, InactiveStatusName, cancellationToken);
+        await _ownerListRepository.SetFirstAsync(target.GameType, target.RequestId, InactiveStatusName,
+            cancellationToken);
     }
 
     public async Task<bool> IsActiveAsync(MatchmakingPlayerData target, CancellationToken cancellationToken)
     {
-        var status = await _ownerListRepository.GetAsync(target.RequestId, StatusDataIndex, cancellationToken);
+        var status =
+            await _ownerListRepository.GetAsync(target.GameType, target.RequestId, StatusDataIndex, cancellationToken);
         return ActiveStatusName.Equals(status, StringComparison.Ordinal);
     }
 }
