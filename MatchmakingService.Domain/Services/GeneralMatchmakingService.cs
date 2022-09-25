@@ -46,13 +46,21 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
         var ownerMatchmakingResult =
             await _ownerMatchmakingService.TryMatchmakingAsync(matchmakingPlayerData, cancellationToken);
 
-        return ownerMatchmakingResult.Status switch
+        switch (ownerMatchmakingResult.Status)
         {
-            OwnerMatchmakingStatus.Success => new GeneralMatchmakingResult
-                {Status = GeneralMatchmakingStatus.Success, PlayerIds = ownerMatchmakingResult.PlayerIds},
-            OwnerMatchmakingStatus.Fail => new GeneralMatchmakingResult {Status = GeneralMatchmakingStatus.Pending},
-            _ => throw new ArgumentOutOfRangeException(),
-        };
+            case OwnerMatchmakingStatus.Success:
+                return new GeneralMatchmakingResult
+                {
+                    Status = GeneralMatchmakingStatus.Success, PlayerIds = ownerMatchmakingResult.PlayerIds
+                };
+            case OwnerMatchmakingStatus.Fail:
+            {
+                await _playerDataPoolService.PushAsync(matchmakingPlayerData, cancellationToken);
+                return new GeneralMatchmakingResult {Status = GeneralMatchmakingStatus.Pending};
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private bool MatchmakingTimeout(MatchmakingPlayerData matchmakingPlayerData)

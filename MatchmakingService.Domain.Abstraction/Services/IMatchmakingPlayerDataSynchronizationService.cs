@@ -9,8 +9,10 @@ public interface IMatchmakingPlayerDataSynchronizationService
     Task<bool> TryAddToOwnQueueAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken);
 
-    Task<bool> TryOwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner, TimeSpan ownTimeout,
+    Task<bool> CanOwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken);
+
+    Task OwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner, CancellationToken cancellationToken);
 
     Task ReleaseAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner, CancellationToken cancellationToken);
 }

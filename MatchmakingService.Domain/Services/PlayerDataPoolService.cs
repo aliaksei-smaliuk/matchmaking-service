@@ -25,4 +25,9 @@ public class PlayerDataPoolService : IPlayerDataPoolService
         var matchmakingPlayerData = await _dataRepository.GetAsync(gameType, requestId, cancellationToken);
         return matchmakingPlayerData;
     }
+
+    public async Task PushAsync(MatchmakingPlayerData matchmakingPlayerData, CancellationToken cancellationToken)
+    {
+        await _poolRepository.PushAsync(matchmakingPlayerData, cancellationToken);
+    }
 }

@@ -39,22 +39,28 @@ public class MatchmakingPlayerDataSynchronizationService : IMatchmakingPlayerDat
         return true;
     }
 
-    public async Task<bool> TryOwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner, TimeSpan ownTimeout,
+    public async Task<bool> CanOwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
         var isActive = await _ownerListService.IsActiveAsync(target, cancellationToken);
         if (!isActive)
             return false;
 
-        var isOwn =
-            await _ownPolicy.ExecuteAsync(() => _ownerListService.IsActiveAsync(target, owner, cancellationToken));
-
-        if (isOwn)
-        {
-            await _ownerListService.DeactivateAsync(target, cancellationToken);
-        }
+        var isOwn = await _ownPolicy.ExecuteAsync(() =>
+            _ownerListService.IsActiveAsync(target, owner, cancellationToken));
 
         return isOwn;
+    }
+
+    public async Task OwnAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,
+        CancellationToken cancellationToken)
+    {
+        var isOwn = await CanOwnAsync(target, owner, cancellationToken);
+
+        if (isOwn)
+            await _ownerListService.DeactivateAsync(target, cancellationToken);
+        else
+            throw new InvalidOperationException("Cannot own with other owner");
     }
 
     public async Task ReleaseAsync(MatchmakingPlayerData target, MatchmakingPlayerData owner,

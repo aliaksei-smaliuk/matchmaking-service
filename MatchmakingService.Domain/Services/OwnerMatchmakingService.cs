@@ -5,14 +5,20 @@ namespace MatchmakingService.Domain.Services;
 
 public class OwnerMatchmakingService : IOwnerMatchmakingService
 {
+    private readonly ICandidatesFilterService _candidatesFilterService;
+    private readonly IOwnCandidatesService _ownCandidatesService;
     private readonly IScoreCandidatesService _scoreCandidatesService;
     private readonly IMatchmakingPlayerDataSynchronizationService _synchronizationService;
 
     public OwnerMatchmakingService(IScoreCandidatesService scoreCandidatesService,
-        IMatchmakingPlayerDataSynchronizationService synchronizationService)
+        IMatchmakingPlayerDataSynchronizationService synchronizationService,
+        ICandidatesFilterService candidatesFilterService,
+        IOwnCandidatesService ownCandidatesService)
     {
         _scoreCandidatesService = scoreCandidatesService;
         _synchronizationService = synchronizationService;
+        _candidatesFilterService = candidatesFilterService;
+        _ownCandidatesService = ownCandidatesService;
     }
 
     public async Task<OwnerMatchmakingResult> TryMatchmakingAsync(MatchmakingPlayerData matchmakingPlayerData,
@@ -34,9 +40,9 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
             await FilterCandidatesAsync(ownedLargeCandidatesSample, matchmakingPlayerData, cancellationToken);
 
         // Own candidates to complete room
-        var (roomCompleted, ownedCandidates) =
+        var ownCandidatesResult =
             await OwnCandidatesAsync(smallCandidatesSample, matchmakingPlayerData, cancellationToken);
-        if (!roomCompleted)
+        if (!ownCandidatesResult.IsSuccess)
         {
             // Release all candidates
             await ReleaseCandidatesAsync(ownedLargeCandidatesSample, matchmakingPlayerData, cancellationToken);
@@ -44,9 +50,9 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
         }
 
         // Release candidates that are not in the room
+        var ownedCandidates = ownCandidatesResult.OwnedCandidates!;
         await ReleaseCandidatesAsync(ownedLargeCandidatesSample.Except(ownedCandidates).ToArray(),
-            matchmakingPlayerData,
-            cancellationToken);
+            matchmakingPlayerData, cancellationToken);
         return OwnerMatchmakingResult.Success(ownedCandidates.Select(c => c.PlayerId).ToArray());
     }
 
@@ -67,11 +73,11 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
         IReadOnlyCollection<MatchmakingPlayerData> candidates, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        var candidate2OwnTask = candidates.Where(c => c.RequestId != owner.RequestId).ToDictionary(c => c,
+        var candidate2QueueOwnTask = candidates.Where(c => c.RequestId != owner.RequestId).ToDictionary(c => c,
             c => _synchronizationService.TryAddToOwnQueueAsync(c, owner, cancellationToken));
-        await Task.WhenAll(candidate2OwnTask.Values);
+        await Task.WhenAll(candidate2QueueOwnTask.Values);
 
-        return candidate2OwnTask
+        return candidate2QueueOwnTask
             .Where(p => p.Value.Result)
             .Select(p => p.Key)
             .Concat(new[] {owner})
@@ -82,14 +88,14 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
         IReadOnlyCollection<MatchmakingPlayerData> candidates, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        return candidates;
+        return await _candidatesFilterService.FilterCandidatesAsync(candidates, owner, cancellationToken);
     }
 
-    private async Task<(bool, IReadOnlyCollection<MatchmakingPlayerData>)> OwnCandidatesAsync(
-        IReadOnlyCollection<MatchmakingPlayerData> smallCandidatesSample, MatchmakingPlayerData matchmakingPlayerData,
+    private async Task<OwnCandidatesResult> OwnCandidatesAsync(
+        IReadOnlyCollection<MatchmakingPlayerData> candidatesSample, MatchmakingPlayerData owner,
         CancellationToken cancellationToken)
     {
-        return (false, Array.Empty<MatchmakingPlayerData>());
+        return await _ownCandidatesService.OwnCandidatesAsync(candidatesSample, owner, cancellationToken);
     }
 
     private async Task ReleaseCandidatesAsync(IReadOnlyCollection<MatchmakingPlayerData> ownedCandidatesSample,
