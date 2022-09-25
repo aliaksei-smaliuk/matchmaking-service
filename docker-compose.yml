@@ -18,5 +18,14 @@ services:
       - "8084:80"
     depends_on:
       - redis
+  matchmaking-test-web:
+    image: cool-game/matchmacking-test-web
+    build:
+      context: ./MatchmakingTestClient
+    ports:
+      - "8085:8080"
+    depends_on:
+      - matchmaking-service
+      - matchmaking-worker
   redis:
     image: redis
