@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace MatchmakingService.Domain.Services;
 
-public class PlayerMatchmakingService : IPlayerMatchmakingService
+public class MatchmakingInitializationService : IMatchmakingInitializationService
 {
     private readonly IOptions<MatchmakingOptions> _matchmakingOptions;
     private readonly IPlayerDataPoolRepository _playerDataPoolRepository;
@@ -15,7 +15,7 @@ public class PlayerMatchmakingService : IPlayerMatchmakingService
     private readonly IMatchmakingPlayerDataSynchronizationService _synchronizationService;
     private readonly ISystemClock _systemClock;
 
-    public PlayerMatchmakingService(
+    public MatchmakingInitializationService(
         IPlayerDataPoolRepository playerDataPoolRepository,
         IPlayerDataRepository playerDataRepository,
         IMatchmakingPlayerDataSynchronizationService synchronizationService,
@@ -29,7 +29,7 @@ public class PlayerMatchmakingService : IPlayerMatchmakingService
         _matchmakingOptions = matchmakingOptions;
     }
 
-    public async Task AddPlayerToQueueAsync(PlayerData playerData, CancellationToken cancellationToken)
+    public async Task AddRequestAsync(PlayerData playerData, CancellationToken cancellationToken)
     {
         var matchmakingPlayerData = new MatchmakingPlayerData(playerData)
             {ValidUntil = _systemClock.UtcNow + _matchmakingOptions.Value.MatchmakingTimeout};

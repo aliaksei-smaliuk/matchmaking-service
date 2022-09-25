@@ -16,6 +16,6 @@ public static class ServiceCollectionExtensions
             .Configure<MatchmakingOptions>(configuration.GetSection("Matchmaking"))
             .AddSingleton<IMatchmakingPlayerDataOwnerListService, MatchmakingPlayerDataOwnerListService>()
             .AddSingleton<IMatchmakingPlayerDataSynchronizationService, MatchmakingPlayerDataSynchronizationService>()
-            .AddSingleton<IPlayerMatchmakingService, PlayerMatchmakingService>();
+            .AddSingleton<IMatchmakingInitializationService, MatchmakingInitializationService>();
     }
 }
