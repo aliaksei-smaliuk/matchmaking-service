@@ -1,6 +1,6 @@
 {
-  "short_name": "MatchmakingTestClinet",
-  "name": "MatchmakingTestClinet",
+  "short_name": "MatchmakingTestClient",
+  "name": "MatchmakingTestClient",
   "icons": [
     {
       "src": "favicon.ico",

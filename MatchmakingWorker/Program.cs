@@ -1,3 +1,4 @@
+using MatchmakingService.DataAccess.Kafka.Extensions;
 using MatchmakingService.DataAccess.Redis.Extensions;
 using MatchmakingService.Domain.Extensions;
 using MatchmakingWorker.BackgroundWorkers;
@@ -15,6 +16,7 @@ builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 builder.Services
     .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddRedisDataAccess(builder.Configuration.GetSection("Redis"))
+    .AddKafkaDataAccess(builder.Configuration.GetSection("Kafka"))
     .AddDomainAccess(builder.Configuration);
 
 builder.Services.AddHostedService<Worker>();

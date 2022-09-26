@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MatchmakingService.DataAccess.Kafka\MatchmakingService.DataAccess.Kafka.csproj"/>
         <ProjectReference Include="..\MatchmakingService.DataAccess.Redis\MatchmakingService.DataAccess.Redis.csproj"/>
         <ProjectReference Include="..\MatchmakingService.Domain\MatchmakingService.Domain.csproj"/>
     </ItemGroup>

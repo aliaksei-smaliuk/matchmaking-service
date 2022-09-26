@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MatchmakingTestClinet.Controllers;
+namespace MatchmakingTestClient.Controllers;
 
 [ApiController]
 [Route("[controller]")]

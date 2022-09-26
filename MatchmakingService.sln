@@ -14,7 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAcce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingWorker", "MatchmakingWorker\MatchmakingWorker.csproj", "{CAFA924D-E447-4B14-9B77-FBAA5EDDCD62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingTestClinet", "MatchmakingTestClinet\MatchmakingTestClinet.csproj", "{FEF7E69D-6B48-4154-A2EB-F5572B420ADE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingTestClient", "MatchmakingTestClient\MatchmakingTestClient.csproj", "{FEF7E69D-6B48-4154-A2EB-F5572B420ADE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAccess.Kafka", "MatchmakingService.DataAccess.Kafka\MatchmakingService.DataAccess.Kafka.csproj", "{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAccess.Kafka.Abstraction", "MatchmakingService.DataAccess.Kafka.Abstraction\MatchmakingService.DataAccess.Kafka.Abstraction.csproj", "{A091F6CD-E197-45FD-AA6C-79D278DE7743}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +50,20 @@ Global
 		{FEF7E69D-6B48-4154-A2EB-F5572B420ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEF7E69D-6B48-4154-A2EB-F5572B420ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEF7E69D-6B48-4154-A2EB-F5572B420ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8212EC93-9073-4016-B699-B186248B8D8C} = {8C5F8645-A41C-48B1-8B22-5AABD539A5A3}
 		{15C88732-01DE-4653-B54B-4B528A539ABB} = {8C5F8645-A41C-48B1-8B22-5AABD539A5A3}
 		{77C37AC0-9425-4082-9B6D-19CB2214E893} = {6AA0FBAB-A28A-4568-A4AF-7D42763C7A44}
+		{D9522FA0-4E2A-464B-B88A-1F839FFCF9CC} = {6AA0FBAB-A28A-4568-A4AF-7D42763C7A44}
+		{A091F6CD-E197-45FD-AA6C-79D278DE7743} = {6AA0FBAB-A28A-4568-A4AF-7D42763C7A44}
 	EndGlobalSection
 EndGlobal

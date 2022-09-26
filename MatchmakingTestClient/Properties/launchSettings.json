@@ -1,0 +1,14 @@
+﻿{
+  "profiles": {
+    "MatchmakingTestClient": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7114;http://localhost:5214",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "Kafka__BootstrapServers": "localhost:9092"
+      }
+    }
+  }
+}

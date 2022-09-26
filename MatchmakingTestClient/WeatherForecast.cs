@@ -1,4 +1,4 @@
-namespace MatchmakingTestClinet;
+namespace MatchmakingTestClient;
 
 public class WeatherForecast
 {

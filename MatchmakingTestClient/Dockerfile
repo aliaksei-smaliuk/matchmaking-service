@@ -12,16 +12,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
-COPY ["MatchmakingTestClinet/MatchmakingTestClinet.csproj", "MatchmakingTestClinet/"]
-RUN dotnet restore "MatchmakingTestClinet/MatchmakingTestClinet.csproj"
+COPY ["MatchmakingTestClient/MatchmakingTestClient.csproj", "MatchmakingTestClient/"]
+RUN dotnet restore "MatchmakingTestClient/MatchmakingTestClient.csproj"
 COPY . .
-WORKDIR "/src/MatchmakingTestClinet"
-RUN dotnet build "MatchmakingTestClinet.csproj" -c Release -o /app/build
+WORKDIR "/src/MatchmakingTestClient"
+RUN dotnet build "MatchmakingTestClient.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MatchmakingTestClinet.csproj" -c Release -o /app/publish
+RUN dotnet publish "MatchmakingTestClient.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MatchmakingTestClinet.dll"]
+ENTRYPOINT ["dotnet", "MatchmakingTestClient.dll"]
