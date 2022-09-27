@@ -34,13 +34,14 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
         if (matchmakingPlayerData is null)
         {
             _logger.LogWarning("No matchmaking requests found");
-            return new GeneralMatchmakingResult {Status = GeneralMatchmakingStatus.Pending};
+            return new GeneralMatchmakingResult(null) {Status = GeneralMatchmakingStatus.Pending};
         }
 
         if (MatchmakingTimeout(matchmakingPlayerData))
         {
             await _matchmakingRequestService.ClearAsync(matchmakingPlayerData, cancellationToken);
-            return new GeneralMatchmakingResult {Status = GeneralMatchmakingStatus.Timeout};
+            return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
+                {Status = GeneralMatchmakingStatus.Timeout};
         }
 
         var ownerMatchmakingResult =
@@ -49,14 +50,16 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
         switch (ownerMatchmakingResult.Status)
         {
             case OwnerMatchmakingStatus.Success:
-                return new GeneralMatchmakingResult
+                return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
                 {
-                    Status = GeneralMatchmakingStatus.Success, PlayerIds = ownerMatchmakingResult.PlayerIds
+                    Status = GeneralMatchmakingStatus.Success,
+                    MatchmakingPlayerDatas = ownerMatchmakingResult.MatchmakingPlayerDatas
                 };
             case OwnerMatchmakingStatus.Fail:
             {
                 await _playerDataPoolService.PushAsync(matchmakingPlayerData, cancellationToken);
-                return new GeneralMatchmakingResult {Status = GeneralMatchmakingStatus.Pending};
+                return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
+                    {Status = GeneralMatchmakingStatus.Pending};
             }
             default:
                 throw new ArgumentOutOfRangeException();

@@ -4,15 +4,16 @@ public record OwnerMatchmakingResult
 {
     public static readonly OwnerMatchmakingResult Fail = new(OwnerMatchmakingStatus.Fail, null);
 
-    private OwnerMatchmakingResult(OwnerMatchmakingStatus status, IReadOnlyCollection<string>? playerIds)
+    private OwnerMatchmakingResult(OwnerMatchmakingStatus status,
+        IReadOnlyCollection<MatchmakingPlayerData>? matchmakingPlayerDatas)
     {
         Status = status;
-        PlayerIds = playerIds;
+        MatchmakingPlayerDatas = matchmakingPlayerDatas;
     }
 
     public OwnerMatchmakingStatus Status { get; }
-    public IReadOnlyCollection<string>? PlayerIds { get; }
+    public IReadOnlyCollection<MatchmakingPlayerData>? MatchmakingPlayerDatas { get; }
 
-    public static OwnerMatchmakingResult Success(IReadOnlyCollection<string> playerIds) =>
-        new(OwnerMatchmakingStatus.Success, playerIds);
+    public static OwnerMatchmakingResult Success(IReadOnlyCollection<MatchmakingPlayerData> matchmakingPlayerDatas) =>
+        new(OwnerMatchmakingStatus.Success, matchmakingPlayerDatas);
 }

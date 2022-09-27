@@ -21,7 +21,7 @@ public class TestExecutionController : ControllerBase
         var matchmakingResult = await _generalMatchmakingService.TryMatchmakingAsync(gameType, cancellationToken);
         return matchmakingResult.Status switch
         {
-            GeneralMatchmakingStatus.Success => Ok(matchmakingResult.PlayerIds),
+            GeneralMatchmakingStatus.Success => Ok(matchmakingResult.MatchmakingPlayerDatas),
             GeneralMatchmakingStatus.Pending => NotFound(),
             GeneralMatchmakingStatus.Timeout => BadRequest("Matchmaking timeout"),
             _ => throw new ArgumentOutOfRangeException()

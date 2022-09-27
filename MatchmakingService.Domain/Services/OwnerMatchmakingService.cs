@@ -53,7 +53,7 @@ public class OwnerMatchmakingService : IOwnerMatchmakingService
         var ownedCandidates = ownCandidatesResult.OwnedCandidates!;
         await ReleaseCandidatesAsync(ownedLargeCandidatesSample.Except(ownedCandidates).ToArray(),
             matchmakingPlayerData, cancellationToken);
-        return OwnerMatchmakingResult.Success(ownedCandidates.Select(c => c.PlayerId).ToArray());
+        return OwnerMatchmakingResult.Success(ownedCandidates);
     }
 
     private async Task<bool> TryAddToSelfOwnQueueAsync(MatchmakingPlayerData matchmakingPlayerData,
