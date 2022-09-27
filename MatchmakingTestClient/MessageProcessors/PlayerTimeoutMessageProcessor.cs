@@ -10,9 +10,9 @@ public interface ITimeoutPlayerMessageProcessor : IMessageProcessor<string>
 
 public class TimeoutPlayerMessageProcessor : ITimeoutPlayerMessageProcessor
 {
-    private readonly IHubContext<ChatHub> _hubContext;
+    private readonly IHubContext<MatchmakingHub> _hubContext;
 
-    public TimeoutPlayerMessageProcessor(IHubContext<ChatHub> hubContext)
+    public TimeoutPlayerMessageProcessor(IHubContext<MatchmakingHub> hubContext)
     {
         _hubContext = hubContext;
     }

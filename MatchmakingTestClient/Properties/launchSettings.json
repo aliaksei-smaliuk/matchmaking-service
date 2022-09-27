@@ -7,7 +7,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
-        "Kafka__BootstrapServers": "localhost:9092"
+        "Kafka__BootstrapServers": "localhost:9092",
+        "Client__HubUrl": "https://localhost:7114/matchmakinghub"
       }
     }
   }

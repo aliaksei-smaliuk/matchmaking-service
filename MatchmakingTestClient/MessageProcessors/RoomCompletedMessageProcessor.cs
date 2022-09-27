@@ -10,9 +10,9 @@ public interface IRoomCompletedMessageProcessor : IMessageProcessor<string>
 
 public class RoomCompletedMessageProcessor : IRoomCompletedMessageProcessor
 {
-    private readonly IHubContext<ChatHub> _hubContext;
+    private readonly IHubContext<MatchmakingHub> _hubContext;
 
-    public RoomCompletedMessageProcessor(IHubContext<ChatHub> hubContext)
+    public RoomCompletedMessageProcessor(IHubContext<MatchmakingHub> hubContext)
     {
         _hubContext = hubContext;
     }

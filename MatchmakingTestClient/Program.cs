@@ -1,5 +1,6 @@
 using MatchmakingService.DataAccess.Kafka.Extensions;
 using MatchmakingTestClient.BackgroundWorkers;
+using MatchmakingTestClient.Configurations;
 using MatchmakingTestClient.Hubs;
 using MatchmakingTestClient.MessageProcessors;
 
@@ -14,6 +15,7 @@ builder.Services.AddCors();
 builder.Services.AddKafkaDataAccess(builder.Configuration.GetSection("Kafka"));
 builder.Services.AddSingleton<ITimeoutPlayerMessageProcessor, TimeoutPlayerMessageProcessor>();
 builder.Services.AddSingleton<IRoomCompletedMessageProcessor, RoomCompletedMessageProcessor>();
+builder.Services.Configure<ClientOptions>(builder.Configuration.GetSection("Client"));
 
 var app = builder.Build();
 
@@ -37,6 +39,6 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-app.MapHub<ChatHub>("/chatHub");
+app.MapHub<MatchmakingHub>("/matchmakingHub");
 
 app.Run();
