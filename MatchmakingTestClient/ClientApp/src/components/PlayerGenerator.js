@@ -8,7 +8,7 @@ function getRandomInt(max) {
     return Math.round(Math.random() * max);
 }
 
-const processInterval = async function () {
+const processInterval = async function (setPlayerCount) {
     count++;
     const request = {
         playerId: `playerId${count}`,
@@ -28,12 +28,14 @@ const processInterval = async function () {
         }
     }
     const response = await fetch('/matchmaking', init);
-    timeout = setTimeout(processInterval, 60000 / requestsPerMinuteGlobal);
+    setPlayerCount(count)
+    timeout = setTimeout(() => processInterval(setPlayerCount), 60000 / requestsPerMinuteGlobal);
 }
 
 export function PlayerGenerator() {
     const [isGenerating, setIsGenerating] = useState(false);
     const [requestsPerMinute, setRequestsPerMinute] = useState(139);
+    const [playerCount, setPlayerCount] = useState(0);
 
     function handleRequestsPerMinuteChanged(e) {
         setRequestsPerMinute(e.target.value);
@@ -41,7 +43,7 @@ export function PlayerGenerator() {
 
     function startProcessing() {
         requestsPerMinuteGlobal = requestsPerMinute;
-        processInterval();
+        processInterval(setPlayerCount);
         setIsGenerating(true);
     }
 
@@ -60,8 +62,22 @@ export function PlayerGenerator() {
                 }
             </div>
             <div className="col">
-                <input className="form-control" disabled={isGenerating} value={requestsPerMinute}
-                       onChange={handleRequestsPerMinuteChanged}/>
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon3">Matchmaking requests per minute</span>
+                    </div>
+                    <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
+                           disabled={isGenerating} value={requestsPerMinute} onChange={handleRequestsPerMinuteChanged}/>
+                </div>
+            </div>
+            <div className="col">
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon3">Matchmaking requests generated</span>
+                    </div>
+                    <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3" disabled
+                           value={playerCount}/>
+                </div>
             </div>
         </div>
     );
