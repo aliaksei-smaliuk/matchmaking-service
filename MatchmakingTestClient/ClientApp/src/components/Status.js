@@ -34,6 +34,8 @@ export function Status() {
     const [connection, setConnection] = useState(null);
     const [completedRooms, setCompletedRooms] = useState([]);
     const [timeoutPlayers, setTimeoutPlayers] = useState([]);
+    const [roomCompletedCount, setRoomCompletedCount] = useState(0);
+    const [timeoutPlayersCount, setTimeoutPlayersCount] = useState(0);
 
     useEffect(async () => {
         const response = await fetch('/configuration');
@@ -48,11 +50,13 @@ export function Status() {
             return;
 
         connection.on("RoomCompleted", data => {
-            setCompletedRooms([data, ...completedRooms].slice(0, 30))
+            setCompletedRooms([data, ...completedRooms.slice(0, 20)].slice(0, 30))
+            setRoomCompletedCount(roomCompletedCount + 1)
         });
 
         connection.on("TimeoutPlayer", data => {
             setTimeoutPlayers([data, ...timeoutPlayers].slice(0, 30))
+            setTimeoutPlayersCount(timeoutPlayersCount + 1)
         });
 
         return () => {
@@ -64,6 +68,29 @@ export function Status() {
     return (
         <div>
             <PlayerGenerator/>
+            <div className="row">
+                <div className="col">
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon3">Rooms completed count</span>
+                        </div>
+                        <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
+                               disabled
+                               value={roomCompletedCount}/>
+                    </div>
+                </div>
+                <div className="col">
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"
+                                  id="basic-addon3">Timeout matchmaking requests count</span>
+                        </div>
+                        <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
+                               disabled
+                               value={timeoutPlayersCount}/>
+                    </div>
+                </div>
+            </div>
             <div className="row">
                 <div className="col">
                     <table className="table">
