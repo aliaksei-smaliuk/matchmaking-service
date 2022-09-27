@@ -1,23 +1,30 @@
-using MatchmakingTestClient.Hubs;
-using Microsoft.AspNetCore.SignalR;
+using MatchmakingService.DataAccess.Kafka.Abstraction.Repositories;
+using MatchmakingTestClient.MessageProcessors;
 
 namespace MatchmakingTestClient.BackgroundWorkers;
 
 public class TestSignalRWorker : BackgroundService
 {
-    private readonly IHubContext<ChatHub> _hubContext;
+    private readonly IMessageConsumer _messageConsumer;
+    private readonly IRoomCompletedMessageProcessor _roomCompletedMessageProcessor;
+    private readonly ITimeoutPlayerMessageProcessor _timeoutPlayerMessageProcessor;
 
-    public TestSignalRWorker(IHubContext<ChatHub> hubContext)
+    public TestSignalRWorker(IMessageConsumer messageConsumer,
+        IRoomCompletedMessageProcessor roomCompletedMessageProcessor,
+        ITimeoutPlayerMessageProcessor timeoutPlayerMessageProcessor)
     {
-        _hubContext = hubContext;
+        _messageConsumer = messageConsumer;
+        _roomCompletedMessageProcessor = roomCompletedMessageProcessor;
+        _timeoutPlayerMessageProcessor = timeoutPlayerMessageProcessor;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"Test data {DateTime.UtcNow}", stoppingToken);
-            await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
-        }
+        await Task.WhenAll(new[]
+            {
+                _messageConsumer.ConsumeAsync("RoomCompleted", _roomCompletedMessageProcessor, stoppingToken),
+                _messageConsumer.ConsumeAsync("TimeoutPlayer", _timeoutPlayerMessageProcessor, stoppingToken),
+            }
+        );
     }
 }

@@ -1,5 +1,7 @@
+using MatchmakingService.DataAccess.Kafka.Extensions;
 using MatchmakingTestClient.BackgroundWorkers;
 using MatchmakingTestClient.Hubs;
+using MatchmakingTestClient.MessageProcessors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<TestSignalRWorker>();
 builder.Services.AddCors();
+builder.Services.AddKafkaDataAccess(builder.Configuration.GetSection("Kafka"));
+builder.Services.AddSingleton<ITimeoutPlayerMessageProcessor, TimeoutPlayerMessageProcessor>();
+builder.Services.AddSingleton<IRoomCompletedMessageProcessor, RoomCompletedMessageProcessor>();
 
 var app = builder.Build();
 

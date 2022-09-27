@@ -19,7 +19,8 @@ public class Worker : BackgroundService
         {
             var message = $"Worker running at: {DateTimeOffset.Now}";
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            await _messagePublisher.SendAsync("test", message, stoppingToken);
+            await _messagePublisher.SendAsync("RoomCompleted", message, stoppingToken);
+            await _messagePublisher.SendAsync("TimeoutPlayer", message, stoppingToken);
             await Task.Delay(1000, stoppingToken);
         }
     }

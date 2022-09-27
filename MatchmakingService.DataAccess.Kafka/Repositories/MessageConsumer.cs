@@ -26,27 +26,40 @@ public class MessageConsumer : IMessageConsumer
     public async Task ConsumeAsync<T>(string topic, IMessageProcessor<T> messageProcessor,
         CancellationToken cancellationToken)
     {
-        using var consumer = new ConsumerBuilder<Ignore, T>(_config).Build();
-
-        consumer.Subscribe(new[] {topic});
-
-        while (!cancellationToken.IsCancellationRequested)
+        await Task.Factory.StartNew(async () =>
         {
-            var consumeResult = consumer.Consume(cancellationToken);
-            var message = consumeResult.Message.Value;
-            if (message is null)
-                continue;
-
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                await messageProcessor.ProcessAsync(message, cancellationToken);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Failed to process message");
-            }
-        }
+                try
+                {
+                    using var consumer = new ConsumerBuilder<Ignore, T>(_config).Build();
 
-        consumer.Close();
+                    consumer.Subscribe(new[] {topic});
+
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        var consumeResult = consumer.Consume(cancellationToken);
+                        var message = consumeResult.Message.Value;
+                        if (message is null)
+                            continue;
+
+                        try
+                        {
+                            await messageProcessor.ProcessAsync(message, cancellationToken);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogError(e, "Failed to process message");
+                        }
+                    }
+
+                    consumer.Close();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Failed to consume");
+                }
+            }
+        }, TaskCreationOptions.LongRunning);
     }
 }
