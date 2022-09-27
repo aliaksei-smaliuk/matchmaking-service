@@ -30,6 +30,8 @@ services:
       - matchmaking-service
       - matchmaking-worker
       - kafka
+    links:
+      - "matchmaking-service:matchmakingservice"
   kafka:
     image: docker.io/bitnami/kafka:3.1
     container_name: kafka

@@ -1,10 +1,8 @@
 using MatchmakingService.Contracts.Requests;
-using Refit;
 
-namespace MatchmakingTestClient.Clients;
+namespace MatchmakingTestClient.Interfaces;
 
 public interface IMatchmakingServiceClient
 {
-    [Post("/matchmaking/add")]
     Task AddAsync(AddMatchmakingRequest request, CancellationToken cancellationToken);
 }

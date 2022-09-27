@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using MatchmakingService.Contracts.Requests;
 using MatchmakingService.Domain.Abstraction.Models;
@@ -20,7 +21,8 @@ public class MatchmakingController : ControllerBase
     }
 
     [HttpPost("Add")]
-    public async Task<IActionResult> AddAsync(AddMatchmakingRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddAsync([FromBody, Required] AddMatchmakingRequest request,
+        CancellationToken cancellationToken)
     {
         var matchmakingPlayerData = _mapper.Map<PlayerData>(request);
         await _matchmakingRequestService.InitAsync(matchmakingPlayerData, cancellationToken);

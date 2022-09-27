@@ -1,5 +1,5 @@
 using MatchmakingService.Contracts.Requests;
-using MatchmakingTestClient.Clients;
+using MatchmakingTestClient.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchmakingTestClient.Controllers;

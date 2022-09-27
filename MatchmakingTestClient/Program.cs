@@ -1,10 +1,10 @@
 using MatchmakingService.DataAccess.Kafka.Extensions;
 using MatchmakingTestClient.BackgroundWorkers;
-using MatchmakingTestClient.Clients;
 using MatchmakingTestClient.Configurations;
 using MatchmakingTestClient.Hubs;
+using MatchmakingTestClient.Interfaces;
 using MatchmakingTestClient.MessageProcessors;
-using Refit;
+using MatchmakingTestClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +18,8 @@ builder.Services.AddKafkaDataAccess(builder.Configuration.GetSection("Kafka"));
 builder.Services.AddSingleton<ITimeoutPlayerMessageProcessor, TimeoutPlayerMessageProcessor>();
 builder.Services.AddSingleton<IRoomCompletedMessageProcessor, RoomCompletedMessageProcessor>();
 builder.Services.Configure<ClientOptions>(builder.Configuration.GetSection("Client"));
-
-var servicesOptions = builder.Configuration.GetSection("Services").Get<ServicesOptions>();
-builder.Services
-    .AddRefitClient<IMatchmakingServiceClient>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri(servicesOptions.MatchmakingServiceUrl));
+builder.Services.Configure<ServicesOptions>(builder.Configuration.GetSection("Services"));
+builder.Services.AddSingleton<IMatchmakingServiceClient, MatchmakingServiceClient>();
 
 var app = builder.Build();
 
