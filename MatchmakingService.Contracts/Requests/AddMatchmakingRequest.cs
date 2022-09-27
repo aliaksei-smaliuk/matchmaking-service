@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MatchmakingService.Domain.Abstraction.Models;
 
-namespace MatchmakingService.Requests;
+namespace MatchmakingService.Contracts.Requests;
 
 public class AddMatchmakingRequest
 {

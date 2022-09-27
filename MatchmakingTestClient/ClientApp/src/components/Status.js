@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as signalR from "@microsoft/signalr";
+import {PlayerGenerator} from "./PlayerGenerator";
 
 function connectHub(hubUrl) {
     console.log(`Started ${hubUrl}`);
@@ -61,38 +62,41 @@ export function Status() {
     }, [connection])
 
     return (
-        <div className="row">
-            <div className="col">
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th>Game rooms</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {completedRooms.map((message) => {
-                        return <tr key={message}>
-                            <td className="py-3">{message}</td>
+        <div>
+            <PlayerGenerator/>
+            <div className="row">
+                <div className="col">
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th>Game rooms</th>
                         </tr>
-                    })}
-                    </tbody>
-                </table>
-            </div>
-            <div className="col">
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th>Timeout players</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {timeoutPlayers.map((message) => {
-                        return <tr key={message}>
-                            <td className="py-3">{message}</td>
+                        </thead>
+                        <tbody>
+                        {completedRooms.map((message) => {
+                            return <tr key={message}>
+                                <td className="py-3">{message}</td>
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="col">
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th>Timeout players</th>
                         </tr>
-                    })}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {timeoutPlayers.map((message) => {
+                            return <tr key={message}>
+                                <td className="py-3">{message}</td>
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

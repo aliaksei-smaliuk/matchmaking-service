@@ -1,7 +1,7 @@
 using AutoMapper;
+using MatchmakingService.Contracts.Requests;
 using MatchmakingService.Domain.Abstraction.Models;
 using MatchmakingService.Domain.Abstraction.Services;
-using MatchmakingService.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchmakingService.Controllers;

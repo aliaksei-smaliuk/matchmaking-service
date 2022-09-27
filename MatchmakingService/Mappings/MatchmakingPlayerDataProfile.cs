@@ -1,6 +1,6 @@
 using AutoMapper;
+using MatchmakingService.Contracts.Requests;
 using MatchmakingService.Domain.Abstraction.Models;
-using MatchmakingService.Requests;
 
 namespace MatchmakingService.Mappings;
 

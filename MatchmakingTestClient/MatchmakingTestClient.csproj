@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.1"/>
+        <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MatchmakingService.Contracts\MatchmakingService.Contracts.csproj"/>
         <ProjectReference Include="..\MatchmakingService.DataAccess.Kafka\MatchmakingService.DataAccess.Kafka.csproj"/>
     </ItemGroup>
 

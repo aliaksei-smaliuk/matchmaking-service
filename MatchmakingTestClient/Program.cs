@@ -1,8 +1,10 @@
 using MatchmakingService.DataAccess.Kafka.Extensions;
 using MatchmakingTestClient.BackgroundWorkers;
+using MatchmakingTestClient.Clients;
 using MatchmakingTestClient.Configurations;
 using MatchmakingTestClient.Hubs;
 using MatchmakingTestClient.MessageProcessors;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +19,17 @@ builder.Services.AddSingleton<ITimeoutPlayerMessageProcessor, TimeoutPlayerMessa
 builder.Services.AddSingleton<IRoomCompletedMessageProcessor, RoomCompletedMessageProcessor>();
 builder.Services.Configure<ClientOptions>(builder.Configuration.GetSection("Client"));
 
+var servicesOptions = builder.Configuration.GetSection("Services").Get<ServicesOptions>();
+builder.Services
+    .AddRefitClient<IMatchmakingServiceClient>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(servicesOptions.MatchmakingServiceUrl));
+
 var app = builder.Build();
 
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
+    .SetIsOriginAllowed(_ => true) // allow any origin
     //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
     .AllowCredentials());
 

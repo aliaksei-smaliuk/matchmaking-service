@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAcce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.DataAccess.Kafka.Abstraction", "MatchmakingService.DataAccess.Kafka.Abstraction\MatchmakingService.DataAccess.Kafka.Abstraction.csproj", "{A091F6CD-E197-45FD-AA6C-79D278DE7743}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchmakingService.Contracts", "MatchmakingService.Contracts\MatchmakingService.Contracts.csproj", "{0EE4176D-6715-466A-A25F-74021C8464E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A091F6CD-E197-45FD-AA6C-79D278DE7743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE4176D-6715-466A-A25F-74021C8464E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE4176D-6715-466A-A25F-74021C8464E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE4176D-6715-466A-A25F-74021C8464E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE4176D-6715-466A-A25F-74021C8464E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8212EC93-9073-4016-B699-B186248B8D8C} = {8C5F8645-A41C-48B1-8B22-5AABD539A5A3}
