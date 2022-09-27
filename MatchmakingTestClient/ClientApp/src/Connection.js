@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 
-const target = "https://localhost:7114";
+const target = "";//"https://localhost:7114";
 const hubUrl = `${target}/chathub`;
 //const hubUrl = `/chathub`;
 console.log(`Started ${hubUrl}`);

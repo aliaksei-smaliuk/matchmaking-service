@@ -25,9 +25,10 @@ public class MessagePublisher : IMessagePublisher
 
     public async Task SendAsync<T>(string topic, T message, CancellationToken cancellationToken)
     {
-        using var producer = new ProducerBuilder<Null, string>(_config).Build();
         try
         {
+            _logger.LogInformation($"BootstrapServers: {_config.BootstrapServers}");
+            using var producer = new ProducerBuilder<Null, string>(_config).Build();
             var messageStr = JsonSerializer.Serialize(message);
             var deliveryResult =
                 await producer.ProduceAsync(topic, new Message<Null, string> {Value = messageStr}, cancellationToken);
