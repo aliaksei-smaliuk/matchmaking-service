@@ -7,10 +7,11 @@ using Microsoft.Extensions.Options;
 
 namespace MatchmakingService.DataAccess.Kafka.Repositories;
 
-public class MessagePublisher : IMessagePublisher
+public class MessagePublisher : IMessagePublisher, IDisposable
 {
     private readonly ConsumerConfig _config;
     private readonly ILogger<MessagePublisher> _logger;
+    private IProducer<Null, string>? _producer;
 
     public MessagePublisher(IOptions<KafkaOptions> kafkaOptions, ILogger<MessagePublisher> logger)
     {
@@ -23,20 +24,27 @@ public class MessagePublisher : IMessagePublisher
         };
     }
 
+    public void Dispose()
+    {
+        _producer?.Dispose();
+    }
+
     public async Task SendAsync<T>(string topic, T message, CancellationToken cancellationToken)
     {
         try
         {
             _logger.LogInformation($"BootstrapServers: {_config.BootstrapServers}");
-            using var producer = new ProducerBuilder<Null, string>(_config).Build();
+            _producer ??= new ProducerBuilder<Null, string>(_config).Build();
             var messageStr = JsonSerializer.Serialize(message);
-            var deliveryResult =
-                await producer.ProduceAsync(topic, new Message<Null, string> {Value = messageStr}, cancellationToken);
+            var deliveryResult = await _producer.ProduceAsync(topic, new Message<Null, string> {Value = messageStr},
+                cancellationToken);
             _logger.LogInformation($"Delivered '{deliveryResult.Value}' to '{deliveryResult.TopicPartitionOffset}'");
         }
         catch (ProduceException<Null, string> ex)
         {
             _logger.LogError(ex, $"Delivery failed: {ex.Error.Reason}");
+            _producer?.Dispose();
+            _producer = null;
         }
     }
 }
