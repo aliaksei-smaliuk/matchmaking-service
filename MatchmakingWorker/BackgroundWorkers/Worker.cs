@@ -39,12 +39,12 @@ public class Worker : BackgroundService
             case GeneralMatchmakingStatus.Success:
                 await _messagePublisher.SendAsync("RoomCompleted", generalMatchmakingResult.MatchmakingPlayerDatas,
                     cancellationToken);
-                _logger.LogInformation($"RoomCompleted {generalMatchmakingResult.RootPlayerId}");
+                _logger.LogInformation($"RoomCompleted {generalMatchmakingResult.RootPlayerData!.RequestId}");
                 break;
             case GeneralMatchmakingStatus.Timeout:
-                await _messagePublisher.SendAsync("TimeoutPlayer", generalMatchmakingResult.RootPlayerId,
+                await _messagePublisher.SendAsync("TimeoutPlayer", generalMatchmakingResult.RootPlayerData,
                     cancellationToken);
-                _logger.LogWarning($"TimeoutPlayer {generalMatchmakingResult.RootPlayerId}");
+                _logger.LogWarning($"TimeoutPlayer {generalMatchmakingResult.RootPlayerData!.RequestId}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

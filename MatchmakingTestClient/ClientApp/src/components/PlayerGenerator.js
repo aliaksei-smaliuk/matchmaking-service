@@ -12,8 +12,8 @@ const processInterval = async function (setPlayerCount) {
     count++;
     const request = {
         playerId: `playerId${count}`,
-        level: getRandomInt(20),
-        cash: getRandomInt(100),
+        level: getRandomInt(10),
+        cash: getRandomInt(100) + 300,
         platform: getRandomInt(2),
         hoursInGame: getRandomInt(1000),
         gameType: getRandomInt(1)

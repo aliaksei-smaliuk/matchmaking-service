@@ -40,7 +40,7 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
         if (MatchmakingTimeout(matchmakingPlayerData))
         {
             await _matchmakingRequestService.ClearAsync(matchmakingPlayerData, cancellationToken);
-            return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
+            return new GeneralMatchmakingResult(matchmakingPlayerData)
                 {Status = GeneralMatchmakingStatus.Timeout};
         }
 
@@ -50,7 +50,7 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
         switch (ownerMatchmakingResult.Status)
         {
             case OwnerMatchmakingStatus.Success:
-                return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
+                return new GeneralMatchmakingResult(matchmakingPlayerData)
                 {
                     Status = GeneralMatchmakingStatus.Success,
                     MatchmakingPlayerDatas = ownerMatchmakingResult.MatchmakingPlayerDatas
@@ -58,7 +58,7 @@ public class GeneralMatchmakingService : IGeneralMatchmakingService
             case OwnerMatchmakingStatus.Fail:
             {
                 await _playerDataPoolService.PushAsync(matchmakingPlayerData, cancellationToken);
-                return new GeneralMatchmakingResult(matchmakingPlayerData.PlayerId)
+                return new GeneralMatchmakingResult(matchmakingPlayerData)
                     {Status = GeneralMatchmakingStatus.Pending};
             }
             default:

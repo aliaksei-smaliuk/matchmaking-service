@@ -84,7 +84,7 @@ export function Status() {
                         <tbody>
                         {completedRooms.map((message) => {
                             return <tr key={message}>
-                                <td className="py-3">{message}</td>
+                                <td style={{fontSize: "10px"}}>{message}</td>
                             </tr>
                         })}
                         </tbody>
@@ -100,7 +100,7 @@ export function Status() {
                         <tbody>
                         {timeoutPlayers.map((message) => {
                             return <tr key={message}>
-                                <td className="py-3">{message}</td>
+                                <td style={{fontSize: "10px"}}>{message}</td>
                             </tr>
                         })}
                         </tbody>
