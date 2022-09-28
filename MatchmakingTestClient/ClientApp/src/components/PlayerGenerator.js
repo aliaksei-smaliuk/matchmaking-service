@@ -27,7 +27,7 @@ const processInterval = async function (setPlayerCount) {
             'Content-Type': 'application/json'
         }
     }
-    const response = await fetch('/matchmaking', init);
+    await fetch('/matchmaking', init);
     setPlayerCount(count)
     timeout = setTimeout(() => processInterval(setPlayerCount), 60000 / requestsPerMinuteGlobal);
 }

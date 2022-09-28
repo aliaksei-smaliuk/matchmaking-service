@@ -1,34 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import * as signalR from "@microsoft/signalr";
+import {HubConnectionBuilder} from "@microsoft/signalr";
 import {PlayerGenerator} from "./PlayerGenerator";
-
-function connectHub(hubUrl) {
-    console.log(`Started ${hubUrl}`);
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl(hubUrl)
-        .withAutomaticReconnect()
-        .configureLogging(signalR.LogLevel.Debug)
-        .build();
-
-    async function start() {
-        try {
-            console.log("SignalR Connecting.");
-            await connection.start();
-            console.log("SignalR Connected.");
-        } catch (err) {
-            console.log(err);
-            setTimeout(start, 5000);
-        }
-    }
-
-    connection.onclose(async () => {
-        await start();
-    });
-
-    start();
-
-    return connection;
-}
 
 export function Status() {
     const [connection, setConnection] = useState(null);
@@ -37,33 +9,43 @@ export function Status() {
     const [roomCompletedCount, setRoomCompletedCount] = useState(0);
     const [timeoutPlayersCount, setTimeoutPlayersCount] = useState(0);
 
-    useEffect(async () => {
-        const response = await fetch('/configuration');
-        const configuration = await response.json();
+    useEffect(() => {
+        const initConnection = () => {
+            return fetch('/configuration')
+                .then(response => response.json())
+                .then(configuration => {
 
-        console.log(configuration)
-        setConnection(connectHub(configuration.hubUrl))
+                    const newConnection = new HubConnectionBuilder()
+                        .withUrl(configuration.hubUrl)
+                        .withAutomaticReconnect()
+                        .build();
+
+                    newConnection.start()
+                    setConnection(newConnection);
+                });
+        }
+        initConnection();
     }, []);
 
     useEffect(() => {
-        if (!connection)
+        if (!connection) {
             return;
+        }
 
         connection.on("RoomCompleted", data => {
-            setCompletedRooms([data, ...completedRooms.slice(0, 20)].slice(0, 30))
+            setCompletedRooms([data, ...completedRooms])
             setRoomCompletedCount(roomCompletedCount + 1)
         });
 
         connection.on("TimeoutPlayer", data => {
-            setTimeoutPlayers([data, ...timeoutPlayers].slice(0, 30))
+            setTimeoutPlayers([data, ...timeoutPlayers])
             setTimeoutPlayersCount(timeoutPlayersCount + 1)
-        });
-
+        })
         return () => {
-            connection.off("RoomCompleted");
-            connection.off("TimeoutPlayer");
+            connection.off("RoomCompleted")
+            connection.off("TimeoutPlayer")
         }
-    }, [connection])
+    }, [connection, completedRooms, roomCompletedCount, timeoutPlayers, timeoutPlayersCount]);
 
     return (
         <div>
