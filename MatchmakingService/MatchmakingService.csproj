@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MatchmakingService.Contracts\MatchmakingService.Contracts.csproj"/>
         <ProjectReference Include="..\MatchmakingService.DataAccess.Redis\MatchmakingService.DataAccess.Redis.csproj"/>
         <ProjectReference Include="..\MatchmakingService.Domain\MatchmakingService.Domain.csproj"/>
     </ItemGroup>

@@ -1,7 +1,7 @@
 namespace MatchmakingService.Domain.Abstraction.Models;
 
-public record GeneralMatchmakingResult
+public record GeneralMatchmakingResult(MatchmakingPlayerData? RootPlayerData)
 {
     public GeneralMatchmakingStatus Status { get; init; }
-    public IReadOnlyCollection<string>? PlayerIds { get; set; }
+    public IReadOnlyCollection<MatchmakingPlayerData>? MatchmakingPlayerDatas { get; set; }
 }
