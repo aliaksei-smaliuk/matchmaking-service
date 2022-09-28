@@ -34,7 +34,7 @@ const processInterval = async function (setPlayerCount) {
 
 export function PlayerGenerator() {
     const [isGenerating, setIsGenerating] = useState(false);
-    const [requestsPerMinute, setRequestsPerMinute] = useState(139);
+    const [requestsPerMinute, setRequestsPerMinute] = useState(1389);
     const [playerCount, setPlayerCount] = useState(0);
 
     function handleRequestsPerMinuteChanged(e) {
