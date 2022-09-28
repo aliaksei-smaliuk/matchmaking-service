@@ -27,6 +27,8 @@ To deploy all services localy inside docker compose use command
 ```
 docker compose up
 ```
+To access test application web interface use http://localhost:8085/.
+
 To stop and delete all containers
 ```
 docker compose down
