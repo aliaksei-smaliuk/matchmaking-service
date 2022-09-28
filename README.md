@@ -1,5 +1,10 @@
 # Matchmaking POC
-## Repository contains 3 services implementation
+## Documentation
+- [PRD](https://docs.google.com/document/d/16n2lYSyLASt-VRa8XY4FUwTf1Wf7NWV-CCn1hlMVGVc/edit?usp=sharing)
+- [HLD/SDD](https://docs.google.com/document/d/10II0gt0qYYWAHpStQo0PKnZrcwFXQPZ-N9eHPl1svNY/edit?usp=sharing)
+
+## Overview
+Repository contains 3 services implementation
 - matchmaking-service
 - matchmaking-worker
 - matchmaking-test-client
@@ -27,8 +32,3 @@ To stop and delete all containers
 docker compose down
 ```
 Solution with all services could be opened using Visual Studio or Rider.
-
-## Documentation
-More details could be found in documentation.
-[PRD](https://docs.google.com/document/d/16n2lYSyLASt-VRa8XY4FUwTf1Wf7NWV-CCn1hlMVGVc/edit?usp=sharing)
-[HLD/SDD](https://docs.google.com/document/d/10II0gt0qYYWAHpStQo0PKnZrcwFXQPZ-N9eHPl1svNY/edit?usp=sharing)
