@@ -6,10 +6,16 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 # Install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y \
-        nodejs \
-    && rm -rf /var/lib/apt/lists/*
+#RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+#    && apt-get update \
+#    && --insecure apt-get install -y \
+#        nodejs \
+#    && rm -rf /var/lib/apt/lists/*
+RUN curl --insecure -fsSL https://deb.nodesource.com/setup_14.x  | bash -
+RUN apt-get update
+RUN apt-get install -y nodejs
+RUN rm -rf /var/lib/apt/lists/*
+RUN node --version
 
 WORKDIR /src
 COPY ["MatchmakingTestClient/MatchmakingTestClient.csproj", "MatchmakingTestClient/"]
